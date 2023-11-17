@@ -1,0 +1,16 @@
+
+codigo/frontend/.vscode/settings.json
+
+# Ignore all .env files
+**/.env
+
+# Ignore all .venv files
+**/.venv
+
+# Ignore all .venv files
+venv/
+
+# Ignore node_modules directory
+node_modules/
+
+

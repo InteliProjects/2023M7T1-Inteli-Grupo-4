@@ -1,0 +1,194 @@
+<!doctype html>
+<html lang="pt-br">
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Adote um Pet</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/css/bootstrap.min.css" rel="stylesheet"
+    integrity="sha384-4bw+/aepP/YC94hEpVNVgiZdgIC5+VKNBQNGCHeKRQN+PtmoHDEXuppvnDJzQIu9" crossorigin="anonymous">
+</head>
+
+<body>
+  <nav class="navbar navbar-expand-lg bg-body-tertiary">
+    <div class="container-fluid">
+      <img src="img/logo.png" class="logo">
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent"
+        aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navbarSupportedContent">
+        <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+          <li class="nav-item">
+            <a class="nav-link active" aria-current="page" href="#">Listagem</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="new.html">Cadastro</a>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </nav>
+  <main>
+    <h1 class="display-2 text-center">Adote um pet</h1>
+    <div class="py-5">
+      <div class="container">
+        <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 g-3" id="pet-cards">
+          <!-- Pet cards will be dynamically generated here -->
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/js/bootstrap.bundle.min.js"
+    integrity="sha384-HwwvtgBNo3bZJJLYd8oVXjrBZt8cqVSpeBNS5n7C8IVInixGAoxmnlMuBnhbgrkm"
+    crossorigin="anonymous"></script>
+
+  <script>
+    // Function to handle edit button click
+    function handleEditButtonClick(petId) {
+      // Redirect to the edit page with the pet's ID as a query parameter
+      window.location.href = `edit.html?id=${petId}`;
+    }
+
+    // Function to attach click event listeners to all edit buttons
+    function attachEditButtonListeners() {
+      const editButtons = document.querySelectorAll('.btn-outline-secondary');
+      editButtons.forEach(button => {
+        button.addEventListener('click', () => {
+          const card = button.closest('.col');
+          const petId = card.dataset.petId;
+          console.log(petId);
+          handleEditButtonClick(petId);
+        });
+      });
+    }
+
+    // Function to handle delete button click
+    function handleDeleteButtonClick(petId) {
+      const confirmed = confirm('Deseja realmente excluir este pet?');
+      if (confirmed) {
+        // Send a fetch request to delete the pet
+        fetch(`<IP_DO_SERVIDOR_EC2>/pets/${petId}`, {
+          method: 'DELETE',
+        })
+          .then(response => {
+            if (response.ok) {
+              // Refresh the pet list after successful deletion
+              fetchPetData();
+            } else {
+              console.error('Error deleting pet:', response.statusText);
+            }
+          })
+          .catch(error => console.error('Error deleting pet:', error));
+      }
+    }
+
+    // Function to attach click event listeners to all delete buttons
+    function attachDeleteButtonListeners() {
+      const deleteButtons = document.querySelectorAll('.btn-outline-danger');
+      deleteButtons.forEach(button => {
+        button.addEventListener('click', () => {
+          const card = button.closest('.card');
+          console.log(card);
+          const petId = card.dataset.petId;
+          console.log(petId);
+          handleDeleteButtonClick(petId);
+        });
+      });
+    }
+
+    // Function to create a pet card
+    function createCard(pet) {
+      const card = document.createElement('div');
+      card.className = 'col';
+      card.dataset.petId = pet.id;
+
+      const cardContent = document.createElement('div');
+      cardContent.className = 'card shadow-sm';
+
+      const cardImage = document.createElement('img');
+      cardImage.src = pet.image;
+      cardImage.className = 'bd-placeholder-img card-img-top';
+      cardImage.width = '100%';
+      cardImage.height = '225';
+      cardImage.alt = 'Pet Image';
+
+      const cardBody = document.createElement('div');
+      cardBody.className = 'card-body';
+
+      const cardTitle = document.createElement('h5');
+      cardTitle.className = 'card-title';
+      cardTitle.textContent = pet.name;
+
+      const cardDescription = document.createElement('p');
+      cardDescription.className = 'card-text';
+      cardDescription.textContent = pet.description;
+
+      const cardButtonsGroup = document.createElement('div');
+      cardButtonsGroup.className = 'd-flex justify-content-start align-items-center';
+
+      const editButton = document.createElement('button');
+      editButton.type = 'button';
+      editButton.className = 'btn btn-sm btn-outline-secondary m-2';
+      editButton.textContent = 'Editar';
+      editButton.addEventListener('click', () => handleEditButtonClick(pet.id));
+
+      const deleteButton = document.createElement('button');
+      deleteButton.type = 'button';
+      deleteButton.className = 'btn btn-sm btn-outline-danger';
+      deleteButton.textContent = 'Excluir';
+      deleteButton.addEventListener('click', () => handleDeleteButtonClick(pet.id));
+
+      const cardAge = document.createElement('small');
+      cardAge.className = 'text-body-secondary';
+      cardAge.textContent = `${pet.age} anos`;
+
+      // Assemble the card structure
+      cardButtonsGroup.appendChild(editButton);
+      cardButtonsGroup.appendChild(deleteButton);
+      cardBody.appendChild(cardTitle);
+      cardBody.appendChild(cardDescription);
+      cardBody.appendChild(cardButtonsGroup);
+      cardBody.appendChild(cardAge);
+      cardContent.appendChild(cardImage);
+      cardContent.appendChild(cardBody);
+      card.appendChild(cardContent);
+
+      return card;
+    }
+
+
+    // Function to fetch pet data and generate pet cards
+    function fetchPetData() {
+      // EC2 INSTANCE IP GOES HERE
+      fetch('<IP_DO_SERVIDOR_EC2>/pets')
+        .then(response => response.json())
+        .then(data => {
+          const petCardsContainer = document.getElementById('pet-cards');
+          petCardsContainer.innerHTML = ''; // Clear existing content
+
+          data.forEach(pet => {
+            // Create a card for each pet
+            const card = createCard(pet);
+            petCardsContainer.appendChild(card);
+          });
+        })
+        .catch(error => console.error('Error fetching pet data:', error));
+    }
+
+    document.addEventListener('DOMContentLoaded', async () => {
+      // Call the fetchPetData function when the page loads
+      fetchPetData();
+    });
+  </script>
+
+  <style>
+    .logo {
+      width: 10%;
+      padding: 1rem;
+    }
+  </style>
+</body>
+
+</html>

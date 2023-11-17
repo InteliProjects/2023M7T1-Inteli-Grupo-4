@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Loja Stone</title>
+  <!-- Adicione os estilos CSS necessários, como o Bootstrap -->
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+  <link href="../css/style_sumaryOrder.css" rel="stylesheet" />
+</head>
+
+<body>
+  <nav class="navbar navbar-expand-lg bg-body-tertiary" style="background-color: #4CAF50; color: #fff;">
+    <div class="container-fluid">
+      <a class="navbar-brand" style="color: #fff" href="#">Loja Stone</a>
+      <div class="collapse navbar-collapse" id="navbarSupportedContent">
+        <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+          <li class="nav-item">
+            <a class="nav-link active" aria-current="page" style="color: #fff" href="#">Produtos</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" style="color: #fff" href="#">Planos</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" style="color: #fff" href="#">Login</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" style="color: #fff" href="#">Cadastre-se</a>
+          </li>
+        </ul>
+      </div>
+      <p class="d-inline-flex gap-1 ml-auto">
+        <button class="btn btn-light" type="button" data-toggle="collapse" data-target="#collapseExample"
+          aria-expanded="false" aria-controls="collapseExample">
+          Carrinho
+        </button>
+      </p>
+    </div>
+  </nav>
+
+  <!-- Coloque o card com o botão "Carrinho" abaixo da navbar -->
+  <div class="position-fixed" style="top: 56px; right: 0; z-index: 1050;">
+    <div class="collapse custom-collapse justify-content-end" id="collapseExample">
+      <div class="card">
+        <div class="card-header">
+          Carrinho
+          <button type="button" class="close" data-toggle="collapse" data-target="#collapseExample" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="card-body">
+          <!-- Conteúdo do collapse aqui -->
+          Some placeholder content for the collapse component. This panel is hidden by default but revealed
+          when the user activates the relevant trigger.
+        </div>
+      </div>
+    </div>
+  </div>
+  <!-- Conteúdo da página -->
+  <div class="container mt-5">
+    <!-- Conteúdo da página -->
+    <section class="">
+      <div class="container px-4 px-lg-5 mt-5">
+        <div class="row justify-content-center">
+          <h2 class="text-center mb-4 mt-2 mb-5">Pedidos</h2>
+          <div class="col-lg-9">
+            <!-- Tabela de Pedidos -->
+            <!-- Conteúdo do collapse aqui -->
+            <table class="table" id="cartTable">
+              <thead>
+                <tr>
+                  <th>Produto</th>
+                  <th>Imagem</th>
+                  <th>Preço</th>
+                  <th>Quantidade</th>
+                  <th>Total</th>
+                </tr>
+              </thead>
+              <tbody>
+                <!-- Os produtos do carrinho serão preenchidos aqui -->
+              </tbody>
+            </table>
+            <!-- Campo de CEP -->
+            <div class="mb-3 col-lg-5">
+              <input type="text" id="cepInput" class="form-control" placeholder="Digite o CEP">
+              <button class="btn btn-success mt-2" id="calcularFreteBtn">Calcular Frete</button>
+            </div>
+          </div>
+          <div class="col-lg-3">
+            <!-- Resumo do Pedido -->
+            <div class="bg-light p-3">
+              <h4>Resumo do Pedido</h4>
+              <div class="d-flex justify-content-between mb-2">
+                <span>Total dos Produtos:</span>
+                <span id="totalProdutos">R$ 0.00</span> <!-- Corrigido o ID aqui -->
+              </div>
+              <div class="d-flex justify-content-between">
+                <span>Frete:</span>
+                <span id="valorFrete">R$ 0.00</span> <!-- O valor do frete será calculado dinamicamente -->
+              </div>
+              <hr>
+              <div class="d-flex justify-content-between">
+                <span>Total:</span>
+                <span id="total">R$ 0.00</span> <!-- Corrigido o ID aqui -->
+              </div>
+            </div>
+            <!-- Botões -->
+            <div class="d-flex justify-content-between mt-3">
+              <button class="btn btn-success btn-sm" onclick="window.location.href = 'index.html';">Adicionar mais
+                produtos</button>
+              <button class="btn btn-success btn-lg ms-3" onclick="window.location.href = 'payment.html';">Ir para
+                pagamento</button>
+            </div>
+
+          </div>
+        </div>
+      </div>
+    </section>
+
+  </div>
+
+  <!-- Inclua o JavaScript necessário, como o Bootstrap e o jQuery -->
+  <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"></script>
+  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+
+  <script>
+
+    async function retrieveUserId() {
+      const userId = localStorage.getItem('userId');
+      if (userId) {
+        console.log(userId)
+        return userId;
+      } else {
+        console.log('ID do usuário não encontrado.');
+        return null;
+      }
+    }
+    // Função para buscar e preencher os dados do carrinho
+    async function fetchAndRenderCart(userId) {
+      try {
+        const response = await fetch(`/userbasket/${userId}`);
+        const cartData = await response.json();
+        const cartTable = document.getElementById("cartTable");
+        const cartTableBody = cartTable.querySelector("tbody");
+
+        // Limpar qualquer conteúdo existente na tabela
+        cartTableBody.innerHTML = "";
+        console.log(cartData);  // Mostrar os dados no console
+
+
+        cartData.forEach((item) => {
+          const newRow = cartTableBody.insertRow();
+
+          const cellProductName = newRow.insertCell(0);
+          const cellProductImage = newRow.insertCell(1);
+          const cellProductPrice = newRow.insertCell(2);
+          const cellProductQuantity = newRow.insertCell(3);
+          const cellProductTotal = newRow.insertCell(4);
+
+          cellProductName.textContent = item.product_machine.name || item.product_plan.name;
+
+          const imageElement = document.createElement("img");  // Criar novo elemento de imagem para cada item
+          imageElement.src = item.product_machine.image || item.product_plan.image;
+          cellProductImage.appendChild(imageElement);
+          imageElement.width = 50;
+          imageElement.height = 60;
+          cellProductPrice.textContent = item.product_machine.price || item.product_plan.price;
+          cellProductQuantity.textContent = item.quantity;
+          cellProductTotal.textContent = (item.product_machine.price || item.product_plan.price) * item.quantity;
+        });
+
+      } catch (error) {
+        console.error("Erro ao buscar dados do carrinho:", error);
+      }
+    }
+
+    document.addEventListener("DOMContentLoaded", async function () {
+      const userId = await retrieveUserId();
+      if (userId) {
+        fetchAndRenderCart(userId);
+      } else {
+        console.error("ID do usuário não encontrado.");
+      }
+    });
+
+  </script>
+
+</body>
+
+</html>

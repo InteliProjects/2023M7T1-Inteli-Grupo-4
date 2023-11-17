@@ -1,0 +1,288 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Loja Stone</title>
+    <!-- Adicione os estilos CSS necessários, como o Bootstrap -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+</head>
+<body>
+    <nav class="navbar navbar-expand-lg bg-body-tertiary" style="background-color: #4CAF50; color: #fff;">
+        <div class="container-fluid">
+            <a class="navbar-brand" style="color: #fff" href="#">Loja Stone</a>
+            <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                    <li class="nav-item">
+                        <a class="nav-link active" aria-current="page" style="color: #fff" href="#">Produtos</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" style="color: #fff" href="#">Planos</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" style="color: #fff" href="#">Login</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link"  style="color: #fff"href="#">Cadastre-se</a>
+                    </li>
+                </ul>
+            </div>
+            <p class="d-inline-flex gap-1 ml-auto">
+                <button class="btn btn-light" type="button" data-toggle="collapse"
+                    data-target="#collapseExample" aria-expanded="false" aria-controls="collapseExample" >
+                    Carrinho
+                </button>
+            </p>
+        </div>
+    </nav>
+
+    <!-- Coloque o card com o botão "Carrinho" abaixo da navbar -->
+    <div class="position-fixed" style="top: 56px; right: 0; z-index: 1050;">
+        <div class="collapse custom-collapse justify-content-end" id="collapseExample">
+            <div class="card">
+                <div class="card-header">
+                    Carrinho
+                    <button type="button" class="close" data-toggle="collapse"
+                        data-target="#collapseExample" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="card-body">
+                    <!-- Conteúdo do collapse aqui -->
+                    Some placeholder content for the collapse component. This panel is hidden by default but revealed
+                    when the user activates the relevant trigger.
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Conteúdo da página -->
+    <div class="container mt-5">
+        <!-- Conteúdo da página -->
+         <!-- Seção 1 - Card explicativo -->
+      <section class="content-section card mb-4">
+        <div class="container">
+            <div class="row align-items-center">
+                <!-- Conteúdo à esquerda -->
+                <div class="col-md-6">
+                    <h2 class="text-center">Escolha sua Maquininha</h2>
+                    <p class="text-center">Aqui é possível escolher sua maquininha com custo imperdível.</p>
+                    <ul>
+                        <li>Item 1</li>
+                        <li>Item 2</li>
+                        <li>Item 3</li>
+                    </ul>
+                </div>
+                <!-- Imagem à direita -->
+                <div class="col-md-6">
+                    <img src="assets/maquina4.jpg" alt="Imagem" class="img-fluid">
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Seção 2 - Card explicativo -->
+    <section class="content-section card mb-4">
+        <div class="container">
+            <div class="row align-items-center">
+                <!-- Conteúdo à esquerda -->
+                <!-- Imagem à direita -->
+                <div class="col-md-6">
+                    <img src="assets/maquina4.jpg" alt="Imagem" class="img-fluid">
+                </div>
+                <div class="col-md-6">
+                    <h2 class="text-center">Escolha sua Maquininha</h2>
+                    <p class="text-center">Aqui é possível escolher sua maquininha com custo imperdível.</p>
+                    <ul>
+                        <li>Item 1</li>
+                        <li>Item 2</li>
+                        <li>Item 3</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <!-- Main Content Section -->
+    <div class="container my-5">
+        <div class="container">
+            <div>
+                <h2 class="text-center">Simule as taxas das suas vendas</h2>
+            </div>
+            
+            <!-- Option buttons -->
+            
+      <div class="btn-group btn-group-toggle" data-toggle="buttons">
+              <label class="btn btn-primary active" data-option="option1">
+                <input
+                  type="radio"
+                  name="options"
+                  id="option1"
+                  autocomplete="off"
+                  checked
+                />
+                Maquininha
+              </label>
+              <label class="btn btn-primary" data-option="option2">
+                <input type="radio" name="options" id="option2" autocomplete="off" />
+                TapTon
+              </label>
+            </div>
+
+
+            <!-- Table for Maquininha -->
+            <div id="option1Content" class="mt-4">
+              
+              <table class="table table-bordered">
+                
+                <tbody>
+                  <tr>
+                    <td>
+                      <!-- Left column content -->
+                      <p>Selecione seu plano Ton:</p>
+                      <div class="btn-group">
+                        <button class="btn btn-plan btn-primary active">Promo</button>
+                        <button class="btn btn-plan btn-primary">Giga</button>
+                        <button class="btn btn-plan btn-primary">Mega</button>
+                        <button class="btn btn-plan btn-primary">Basico</button>
+                      </div>
+                      <label>Bandeiras:</label>
+                      <select class="form-control">
+                        <option value="visa">Mastercard e Visa</option>
+                        <option value="mastercard">Elo, Amex e Hipercard</option>
+                      </select>
+                      <label>Tipo de Venda:</label>
+                      <select class="form-control">
+                        <option value="debito">Débito</option>
+                        <option value="parcelado1x">Parcelado 1x</option>
+                        <option value="parcelado2x">Parcelado 2x</option>
+                        <option value="parcelado2x">Parcelado 3x</option>
+                        <option value="parcelado4x">Parcelado 4x</option>
+                        <option value="parcelado4x">Parcelado 5x</option>
+                        <option value="parcelado4x">Parcelado 6x</option>
+                        <option value="parcelado4x">Parcelado 7x</option>
+                        <option value="parcelado4x">Parcelado 8x</option>
+                        <option value="parcelado4x">Parcelado 9x</option>
+                        <option value="parcelado4x">Parcelado 10x</option>
+                        <option value="parcelado4x">Parcelado 11x</option>
+                        <option value="parcelado4x">Parcelado 12x</option>
+                      </select>
+                      <label>Valor da Venda:</label>
+                      <div class="input-group">
+                        <div class="input-group-prepend">
+                          <span class="input-group-text">R$</span>
+                        </div>
+                        <input type="text" class="form-control" id="valor-da-venda" />
+                      </div>
+                    </td>
+                    <td>
+                      <!-- Right column content wrapped in a div -->
+                      <div class="right-column">
+                        <div>
+                          <p>
+                            Você recebe:
+                            <span id="valorRecebido" class="font-weight-bold"></span>
+                          </p>
+                        </div>
+                        <div>
+                          <p>
+                            Taxa promo parcelado 12x:
+                            <span class="font-weight-bold"></span>
+                          </p>
+                        </div>
+                        <div>
+                          <p>
+                            Recebimento de venda:
+                            <span class="font-weight-bold">1 dia útil</span>
+                          </p>
+                        </div>
+                      </div>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+      
+            <!-- Table for TapTon -->
+            <div id="option2Content" class="mt-4" style="display: none">
+              <h3>TapTon</h3>
+              <table class="table table-bordered">
+                <tbody>
+                  <tr>
+                    <td>
+                      <!-- Left column content for TapTon -->
+                      <label>Bandeiras:</label>
+                      <select class="form-control" id="bandeiras-tapton">
+                        <option value="visa" >Mastercard e Visa</option>
+                        <option value="mastercard">Elo e Amex</option>
+                      </select>
+                      <label>Tipo da venda:</label>
+                      <select class="form-control">
+                        <option value="debito">Débito</option>
+                        <option value="parcelado1x">Parcelado 1x</option>
+                        <option value="parcelado2x">Parcelado 2x</option>
+                        <option value="parcelado2x">Parcelado 3x</option>
+                        <option value="parcelado4x">Parcelado 4x</option>
+                        <option value="parcelado4x">Parcelado 5x</option>
+                        <option value="parcelado4x">Parcelado 6x</option>
+                        <option value="parcelado4x">Parcelado 7x</option>
+                        <option value="parcelado4x">Parcelado 8x</option>
+                        <option value="parcelado4x">Parcelado 9x</option>
+                        <option value="parcelado4x">Parcelado 10x</option>
+                        <option value="parcelado4x">Parcelado 11x</option>
+                        <option value="parcelado4x">Parcelado 12x</option>
+                      </select>
+                      <label>Valor da venda:</label>
+                      <div class="input-group">
+                        <div class="input-group-prepend">
+                          <span class="input-group-text">R$</span>
+                        </div>
+                        <input type="text" class="form-control" id="valor-da-venda-tapton" />
+                      </div>
+                    </td>
+                    <td>
+                      <!-- Right column content for TapTon -->
+                      <div class="right-column">
+                        <div>
+                          <p>Você recebe: <span class="font-weight-bold" id="valorRecebido2"></span></p>
+                          <div>
+                            <p>
+                              Taxa promo parcelado 12x:
+                              <span class="font-weight-bold"></span>
+                            </p>
+                          </div>
+                        <div>
+                          <p>
+                            Recebimento de venda:
+                            <span class="font-weight-bold"></span>
+                          </p>
+                        </div>
+                      </div>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+      
+
+          <div class="text-center">
+            <a href="produtos.html" class="btn btn-primary mt-4">Escolha sua maquinha</a>
+        </div>
+    </div>
+
+    <!-- Footer Section -->
+    <footer class="bg-dark text-white py-3">
+        <div class="container text-center">
+            <p>&copy; 2023 Stone. Todos Direitos Reservados.</p>
+        </div>
+    </footer>
+
+    </div>
+
+    <!-- Inclua o JavaScript necessário, como o Bootstrap e o jQuery -->
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    
+</body>
+</html>

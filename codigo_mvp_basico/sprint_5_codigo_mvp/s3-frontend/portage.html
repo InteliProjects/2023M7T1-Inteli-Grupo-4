@@ -1,0 +1,214 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+  <meta name="description" content="" />
+  <meta name="author" content="" />
+  <title>Loja Stone - Carrinho</title>
+  <!-- Favicon-->
+  <link rel="icon" type="image/x-icon" href="assets/favicon.ico" />
+  <!-- Bootstrap icons-->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.5.0/font/bootstrap-icons.css" rel="stylesheet" />
+  <!-- Core theme CSS (includes Bootstrap)-->
+  <link href="css/styles.css" rel="stylesheet" />
+</head>
+
+<body>
+  <!-- Navigation -->
+  <nav class="navbar navbar-expand-lg navbar-light bg-light">
+    <div class="container px-4 px-lg-5">
+      <a class="navbar-brand" href="/">Loja Stone</a>
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent"
+        aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation"><span
+          class="navbar-toggler-icon"></span></button>
+      <div class="collapse navbar-collapse" id="navbarSupportedContent">
+        <ul class="navbar-nav me-auto mb-2 mb-lg-0 ms-lg-4">
+          <li class="nav-item"><a class="nav-link active" aria-current="page" href="index.html">Home</a></li>
+          <li class="nav-item"><a class="nav-link" href="/login.html">Login</a></li>
+        </ul>
+        <form class="d-flex">
+          <button class="btn btn-outline-dark" type="submit">
+            <i class="bi-cart-fill me-1"></i>
+            Carrinho
+            <span class="badge bg-dark text-white ms-1 rounded-pill">0</span>
+          </button>
+        </form>
+      </div>
+    </div>
+  </nav>
+
+  <!-- Pedidos -->
+  <section class="">
+    <div class="container px-4 px-lg-5 mt-5">
+      <div class="row justify-content-center">
+        <h2 class="text-center mb-4 mt-2 mb-5">Pedidos</h2>
+        <div class="col-lg-9">
+          <!-- Tabela de Pedidos -->
+          <table class="table">
+            <thead>
+              <tr>
+                <th>Produto</th>
+                <th>Imagem</th>
+                <th>Preço</th>
+                <th>Quantidade</th>
+                <th>Total</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>Maquininha</td>
+                <td><img src="assets/maquininha.webp" alt="Produto" width="50"></td>
+                <td>R$ 99.99</td>
+                <td>
+                  <button class="btn btn-sm btn-secondary" id="diminuirQuantidade">-</button>
+                  <span class="mx-2" id="quantidade">1</span>
+                  <button class="btn btn-sm btn-secondary" id="aumentarQuantidade">+</button>
+                </td>
+                <td>R$ 99.99</td>
+              </tr>
+              <!-- Adicione mais linhas de produtos conforme necessário -->
+            </tbody>
+          </table>
+          <!-- Campo de CEP -->
+          <div class="mb-3 col-lg-5">
+            <input type="text" id="cepInput" class="form-control" placeholder="Digite o CEP">
+            <button class="btn btn-primary mt-2" id="calcularFreteBtn">Calcular Frete</button>
+          </div>
+        </div>
+        <div class="col-lg-3">
+          <!-- Resumo do Pedido -->
+          <div class="bg-light p-3">
+            <h4>Resumo do Pedido</h4>
+            <div class="d-flex justify-content-between mb-2">
+              <span>Total dos Produtos:</span>
+              <span id="totalProdutos">R$ 0.00</span> <!-- Corrigido o ID aqui -->
+            </div>
+            <div class="d-flex justify-content-between">
+              <span>Frete:</span>
+              <span id="valorFrete">R$ 0.00</span> <!-- O valor do frete será calculado dinamicamente -->
+            </div>
+            <hr>
+            <div class="d-flex justify-content-between">
+              <span>Total:</span>
+              <span id="total">R$ 0.00</span> <!-- Corrigido o ID aqui -->
+            </div>
+          </div>
+        <!-- Botões -->
+        <div class="d-flex justify-content-between mt-3">
+            <button class="btn btn-secondary btn-sm" onclick="window.location.href = 'index.html';">Adicionar mais produtos</button>
+            <button class="btn btn-primary btn-lg ms-3" onclick="window.location.href = 'payment.html';">Ir para pagamento</button>
+        </div>
+  
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Bootstrap core JS -->
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"></script>
+  <script src="js/navbar.js"></script>
+  <script src="js/cart.js"></script>
+
+
+  <!-- CONSULTA FRETE API CORREIOS HTTPS
+  <script>
+    document.addEventListener("DOMContentLoaded", function () {
+      const calcularFreteBtn = document.getElementById("calcularFreteBtn");
+      const cepInput = document.getElementById("cepInput");
+      const valorFreteElement = document.getElementById("valorFrete");
+      const totalProdutosElement = document.getElementById("totalProdutos");
+      const totalElement = document.getElementById("total");
+  
+      calcularFreteBtn.addEventListener("click", function () {
+        const cep = cepInput.value;
+        const peso = 600; // 600 gramas
+        const largura = 10; // 10 cm
+        const altura = 10; // 10 cm
+        const profundidade = 20; // 20 cm
+  
+        // Montar a URL da API dos Correios
+        const apiUrl = `http://ws.correios.com.br/calculador/CalcPrecoPrazo.aspx?nCdEmpresa=&sDsSenha=&sCepOrigem=CEP_ORIGEM&sCepDestino=${cep}&nVlPeso=${peso}&nCdFormato=1&nVlComprimento=${profundidade}&nVlAltura=${altura}&nVlLargura=${largura}&sCdMaoPropria=n&nVlValorDeclarado=0&sCdAvisoRecebimento=n&nCdServico=41106&nVlDiametro=0&StrRetorno=xml&nIndicaCalculo=3`;
+  
+        // Fazer uma requisição AJAX para a API dos Correios
+        const xhr = new XMLHttpRequest();
+        xhr.open("GET", apiUrl, true);
+        xhr.onreadystatechange = function () {
+          if (xhr.readyState === 4 && xhr.status === 200) {
+            // Analisar a resposta XML da API dos Correios
+            const parser = new DOMParser();
+            const xmlDoc = parser.parseFromString(xhr.responseText, "text/xml");
+  
+            const valorFrete = parseFloat(xmlDoc.querySelector("Valor").textContent.replace(",", "."));
+  
+            // Atualize o valor do frete na página
+            valorFreteElement.textContent = `R$ ${valorFrete.toFixed(2)}`;
+  
+            // Atualize o valor total no resumo do pedido
+            const totalProdutos = parseFloat(totalProdutosElement.textContent.replace("R$ ", ""));
+            const totalPedido = totalProdutos + valorFrete;
+            totalElement.textContent = `R$ ${totalPedido.toFixed(2)}`;
+          }
+        };
+        xhr.send();
+      });
+    });
+  </script>
+-->
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+      const calcularFreteBtn = document.getElementById("calcularFreteBtn");
+      const cepInput = document.getElementById("cepInput");
+      const valorFreteElement = document.getElementById("valorFrete");
+      const totalProdutosElement = document.getElementById("totalProdutos");
+      const totalElement = document.getElementById("total");
+      const aumentarQuantidadeBtn = document.getElementById("aumentarQuantidade");
+      const diminuirQuantidadeBtn = document.getElementById("diminuirQuantidade");
+      const quantidadeElement = document.getElementById("quantidade");
+
+      let quantidade = 1; // Quantidade inicial
+      const precoUnitario = 99.99; // Preço unitário
+
+      // Função para atualizar o total dos produtos e o resumo do pedido
+      function atualizarTotal() {
+        const totalProdutos = quantidade * precoUnitario;
+        totalProdutosElement.textContent = `R$ ${totalProdutos.toFixed(2)}`;
+
+        // Atualize o valor total no resumo do pedido
+        const totalPedido = totalProdutos + parseFloat(valorFreteElement.textContent.replace("R$ ", ""));
+        totalElement.textContent = `R$ ${totalPedido.toFixed(2)}`;
+      }
+
+      // Inicialize o total dos produtos e o resumo do pedido
+      atualizarTotal();
+
+      // Evento para aumentar a quantidade
+      aumentarQuantidadeBtn.addEventListener("click", function () {
+        quantidade++;
+        quantidadeElement.textContent = quantidade;
+        atualizarTotal();
+      });
+
+      // Evento para diminuir a quantidade (com mínimo de 1)
+      diminuirQuantidadeBtn.addEventListener("click", function () {
+        if (quantidade > 1) {
+          quantidade--;
+          quantidadeElement.textContent = quantidade;
+          atualizarTotal();
+        }
+      });
+
+      // Evento para calcular o frete (simulação de custo de frete fixo de R$ 20)
+      calcularFreteBtn.addEventListener("click", function () {
+        const valorFreteFixo = 20.00;
+
+        valorFreteElement.textContent = `R$ ${valorFreteFixo.toFixed(2)}`;
+        atualizarTotal();
+      });
+    });
+  </script>
+  
+</body>
+
+</html>

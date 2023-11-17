@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Loja Stone</title>
+    <!-- Adicione os estilos CSS necessários, como o Bootstrap -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+</head>
+<body>
+    <nav class="navbar navbar-expand-lg bg-body-tertiary" style="background-color: #4CAF50; color: #fff;">
+        <div class="container-fluid">
+            <a class="navbar-brand" style="color: #fff" href="#">Loja Stone</a>
+            <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                    <li class="nav-item">
+                        <a class="nav-link active" aria-current="page" style="color: #fff" href="#">Produtos</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" style="color: #fff" href="#">Planos</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" style="color: #fff" href="#">Login</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link"  style="color: #fff"href="#">Cadastre-se</a>
+                    </li>
+                </ul>
+            </div>
+            <p class="d-inline-flex gap-1 ml-auto">
+                <button class="btn btn-light" type="button" data-toggle="collapse"
+                    data-target="#collapseExample" aria-expanded="false" aria-controls="collapseExample" >
+                    Carrinho
+                </button>
+            </p>
+        </div>
+    </nav>
+
+    <!-- Coloque o card com o botão "Carrinho" abaixo da navbar -->
+    <div class="position-fixed" style="top: 56px; right: 0; z-index: 1050;">
+        <div class="collapse custom-collapse justify-content-end" id="collapseExample">
+            <div class="card">
+                <div class="card-header">
+                    Carrinho
+                    <button type="button" class="close" data-toggle="collapse"
+                        data-target="#collapseExample" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="card-body">
+                    <!-- Conteúdo do collapse aqui -->
+                    Some placeholder content for the collapse component. This panel is hidden by default but revealed
+                    when the user activates the relevant trigger.
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Conteúdo da página -->
+    <div class="container mt-5">
+        <!-- Conteúdo da página -->
+        <header>
+            <h1>Escolha seu plano</h1>
+        </header>
+    
+        <div class="carousel-container">
+            <section class="promo-section">
+                <div class="carousel promo-carousel">
+                    <!-- Promoção 1 -->
+                    <div class="promo-card" id="promo-1">
+                        <img src="../assets/taxapixqrcode.jpg" alt="Promoção 1" width="60px">
+                        <h1 style="margin-bottom: 20px;">PromoTon</h2>
+                            <p>As melhores taxas para você</p>
+                            <!-- Tabela com os valores -->
+                            <table class="valores">
+                                <tr>
+                                    <td>Débito</td>
+                                    <td>Crédito</td>
+                                    <td>Crédito 12x</td>
+                                </tr>
+                                <tr>
+                                    <td class="coluna-num">0,80%</td>
+                                    <td class="coluna-num">0,83%</td>
+                                    <td class="coluna-num">9,88%</td>
+                                </tr>
+                            </table>
+                    </div>
+            </section>
+    
+            <section class="product-section" id="product-section">
+                <div class="card" style="width: 10rem;">
+                    <img src="../assets/maquina1.jpg" class="card-img-top" alt="...">
+                    <div class="card-body">
+                        <!-- Div para envolver o título e o preço -->
+                        <div class="product-details">
+                            <div>
+                                <h1 style="margin-bottom: 20px;">T1 Giga</h1>
+                                <p style="margin-bottom: 15px;">à vista <br />R$ 94,80 </p>
+                            </div>
+    
+                            <!-- Novo elemento ao lado do preço -->
+                            <div class="price-info">
+                                <div class="price-parts">
+                                    <p>12x</p>
+                                    <p>R$</p>
+                                </div>
+                                <p class="main-price">7</p>
+                                <p class="decimal-price">,90</p>
+                            </div>
+                        </div>
+                        <p class="cashback-text">Receba 100% de Cashback da sua 1° maquininha ao atingir R$ 10 mil em vendas
+                        </p>
+                        <button class="product-card-button">Pedir T1 Giga</button>
+                        <div class="product-icons">
+                            <div class="product-icon green-icon">
+                                <i class="fas fa-truck"></i> <!-- Ícone de Frete e troca grátis para todo o Brasil -->
+                                <span>Frete e troca grátis para todo o Brasil</span>
+                            </div>
+                            <div class="product-icon">
+                                <i class="fas fa-clock"></i> <!-- Ícone de Receba suas vendas em 1 dia útil -->
+                                <span>Receba suas vendas em 1 dia útil</span>
+                            </div>
+                            <div class="product-icon">
+                                <i class="fas fa-mobile-alt"></i>
+                                <!-- Ícone de Precisa de celular com internet com internet -->
+                                <span>Precisa de celular com internet</span>
+                            </div>
+                            <div class="product-icon">
+                                <i class="fas fa-wifi"></i> <!-- Ícone de Receba por aproximação(NFC) -->
+                                <span>Receba por aproximação(NFC)</span>
+                            </div>
+                            <div class="product-icon">
+                                <i class="fas fa-comment-alt"></i> <!-- Ícone de comprovante de SMS -->
+                                <span>Comprovante por sms</span>
+                            </div>
+                            <div class="product-icon">
+                                <i class="fas fa-dollar-sign"></i>
+                                <!-- Ícone de Venda pelo App com TapTon, Link,Pix e Boleto  -->
+                                <span>Venda pelo App com TapTon, Link,Pix e Boleto </span>
+                            </div>
+                        </div>
+                    </div>
+    
+            </section>
+        </div>
+
+    </div>
+
+    <!-- Inclua o JavaScript necessário, como o Bootstrap e o jQuery -->
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    
+</body>
+</html>
+
+
+

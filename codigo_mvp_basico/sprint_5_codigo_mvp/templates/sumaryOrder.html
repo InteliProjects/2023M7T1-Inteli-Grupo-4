@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Loja Stone</title>
+  <!-- Adicione os estilos CSS necessários, como o Bootstrap -->
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+  <link href="../css/style_summaryOrder.css" rel="stylesheet" />
+</head>
+<body>
+  <nav class="navbar navbar-expand-lg" style="background-color: #4CAF50; color: #fff;">
+    <div class="container-fluid">
+      <a class="navbar-brand" style="color: #fff" href="#">Loja Stone</a>
+      <div class="collapse navbar-collapse" id="navbarSupportedContent">
+        <ul class="navbar-nav ml-auto"> <!-- Use ml-auto para alinhar os itens à direita -->
+          <li class="nav-item">
+            <a class="nav-link" style="color: #fff" href="/produtos">Produtos</a>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </nav>
+
+  <!-- Conteúdo da página -->
+  <div class="container mt-5">
+    <section>
+      <div class="container px-4 px-lg-5 mt-5">
+        <div class="row justify-content-center">
+          <h2 class="text-center mb-4 mt-2">Pedidos</h2>
+          <div class="col-lg-9">
+            <!-- Tabela de Pedidos -->
+            <table class="table" id="cartTable">
+              <thead>
+                <tr>
+                  <th>Produto</th>
+                  <th>Imagem</th>
+                  <th>Preço</th>
+                  <th>Quantidade</th>
+                  <th>Total</th>
+                </tr>
+              </thead>
+              <tbody>
+                <!-- Os produtos do carrinho serão preenchidos aqui -->
+              </tbody>
+            </table>
+          </div>
+          <div class="col-lg-3">
+            <!-- Resumo do Pedido -->
+            <div class="bg-light p-3">
+              <h4>Resumo do Pedido</h4>
+              <div class="d-flex justify-content-between mb-2">
+                <span>Total dos Produtos:</span>
+                <span id="totalProdutos">R$ 0.00</span>
+              </div>
+              <div class="d-flex justify-content-between">
+                <span>Frete:</span>
+                <span id="valorFrete">R$ 0.00</span>
+              </div>
+              <hr>
+              <div class="d-flex justify-content-between">
+                <span>Total:</span>
+                <span id="total">R$ 0.00</span>
+              </div>
+            </div>
+            <!-- Botões -->
+            <div class="d-flex justify-content-between mt-3">
+              <button class="btn btn-success btn-sm" onclick="window.location.href = '/produtos';">Adicionar mais produtos</button>
+              <button class="btn btn-success btn-lg ms-3" onclick="window.location.href = 'payment.html';">Ir para pagamento</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+  </div>
+
+  <!-- Inclua o JavaScript necessário, como o Bootstrap e o jQuery -->
+  <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"></script>
+  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+
+  <script>
+    async function retrieveUserId() {
+      const userId = localStorage.getItem('userId');
+      if (userId) {
+        console.log(userId);
+        return userId;
+      } else {
+        console.log('ID do usuário não encontrado.');
+        return null;
+      }
+    }
+
+    // Função para buscar e preencher os dados do carrinho
+    async function fetchAndRenderCart(userId) {
+      try {
+        const response = await fetch(`/userbasket/${userId}`);
+        const cartData = await response.json();
+        const cartTable = document.getElementById("cartTable");
+        const cartTableBody = cartTable.querySelector("tbody");
+
+        // Limpar qualquer conteúdo existente na tabela
+        cartTableBody.innerHTML = "";
+        console.log(cartData); // Mostrar os dados no console
+
+        cartData.forEach((item) => {
+          const newRow = cartTableBody.insertRow();
+
+          const cellProductName = newRow.insertCell(0);
+          const cellProductImage = newRow.insertCell(1);
+          const cellProductPrice = newRow.insertCell(2);
+          const cellProductQuantity = newRow.insertCell(3);
+          const cellProductTotal = newRow.insertCell(4);
+
+          cellProductName.textContent = item.product_machine.name || item.product_plan.name;
+
+          const imageElement = document.createElement("img"); // Criar novo elemento de imagem para cada item
+          imageElement.src = item.product_machine.image || item.product_plan.image;
+          cellProductImage.appendChild(imageElement);
+          imageElement.width = 50;
+          imageElement.height = 60;
+          cellProductPrice.textContent = item.product_machine.price || item.product_plan.price;
+          cellProductQuantity.textContent = item.quantity;
+          cellProductTotal.textContent = (item.product_machine.price || item.product_plan.price) * item.quantity;
+        });
+      } catch (error) {
+        console.error("Erro ao buscar dados do carrinho:", error);
+      }
+    }
+
+    // Função para calcular o total dos produtos no carrinho
+    function calculateTotal() {
+      const cartTable = document.getElementById("cartTable");
+      const cartTableBody = cartTable.querySelector("tbody");
+      const totalProdutosElement = document.getElementById("totalProdutos");
+
+      let total = 0;
+
+      // Loop através das linhas da tabela de carrinho
+      for (let i = 0; i < cartTableBody.rows.length; i++) {
+        const row = cartTableBody.rows[i];
+        const cellProductPrice = row.cells[2];
+        const cellProductQuantity = row.cells[3];
+        const productPrice = parseFloat(cellProductPrice.textContent);
+        const quantity = parseInt(cellProductQuantity.textContent);
+
+        total += productPrice * quantity;
+      }
+
+      // Exibir o total na página
+      totalProdutosElement.textContent = `R$ ${total.toFixed(2)}`;
+    }
+
+    document.addEventListener("DOMContentLoaded", async function () {
+      const userId = await retrieveUserId();
+      if (userId) {
+        fetchAndRenderCart(userId);
+      } else {
+        console.error("ID do usuário não encontrado.");
+      }
+    });
+  </script>
+</body>
+</html>

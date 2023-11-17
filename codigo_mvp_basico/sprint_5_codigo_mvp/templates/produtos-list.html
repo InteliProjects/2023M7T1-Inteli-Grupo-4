@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <!-- ... (mesmo cabeçalho do HTML) ... -->
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+  <script src="js/cart.js"></script>
+</head>
+
+<body>
+  <!-- ... (mesmo conteúdo do HTML) ... -->
+  <nav class="navbar navbar-expand-lg bg-body-tertiary" style="background-color: #4CAF50; color: #fff;">
+    <div class="container-fluid">
+      <a class="navbar-brand" style="color: #fff" href="#">Loja Stone</a>
+      <div class="collapse navbar-collapse" id="navbarSupportedContent">
+        <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+          <li class="nav-item">
+            <a class="nav-link" style="color: #fff" href="/entrar">Login</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" style="color: #fff" href="#">Cadastre-se</a>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </nav>
+
+  <!-- Conteúdo da página -->
+  <div class="container mt-5">
+    <header>
+      <h1>Escolha seu plano</h1>
+    </header>
+
+    <div class="carousel-container">
+      <section class="promo-section">
+        <div class="carousel promo-carousel">
+          <!-- Promoção 1 -->
+          <!-- ... (mesmo conteúdo das promoções) ... -->
+        </div>
+      </section>
+
+      <section class="product-section" id="product-section">
+        <!-- Aqui será exibida a lista de produtos -->
+        <div id="product-list"></div>
+      </section>
+      <section class="plan-section" id="plan-section">
+        <!-- Aqui será exibida a lista de produtos -->
+        <div id="plan-list"></div>
+
+      </section>
+    </div>
+  </div>
+
+  <!-- Inclua o JavaScript necessário, como o Bootstrap e o jQuery -->
+  <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"></script>
+  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+
+  <script>
+
+    document.addEventListener("DOMContentLoaded", async function () {
+      try {
+        await getProducts();
+        await getPlans();
+      } catch (error) {
+        console.error("Erro ao obter dados: ", error);
+      }
+    });
+
+    // Função assíncrona para obter dados de produtos do Flask
+    async function getProducts() {
+      try {
+        const response = await fetch("/productmachines"); // Rota do Flask para obter produtos
+        const data = await response.json();
+
+        // Limpe o conteúdo atual da div
+        const productList = document.getElementById("product-list");
+        productList.innerHTML = "";
+
+        // Itere pelos produtos e crie elementos HTML para exibi-los
+        data.forEach((product) => {
+          const productDiv = document.createElement("div");
+          productDiv.className = "product";
+
+          // Crie elementos HTML para exibir os detalhes do produto
+          const productName = document.createElement("h2");
+          productName.textContent = product.name;
+
+          const productPrice = document.createElement("p");
+          productPrice.textContent = `Preço: R$ ${product.price}`;
+
+          const price_divided = document.createElement("p");
+          price_divided.textContent = `Preço: R$ ${product.price_divided}`;
+
+          const image = document.createElement("p");
+          image.textContent = `Preço: R$ ${product.image}`;
+
+          const description = document.createElement("p");
+          description.textContent = `Preço: R$ ${product.description}`;
+
+          const id = document.createElement("p");
+          id.textContent = ``;
+
+          const addToCartButton = document.createElement("button");
+          addToCartButton.type = "button";
+          addToCartButton.className = "btn btn-outline-success";
+          addToCartButton.setAttribute("data-product-id", product.id);
+          addToCartButton.textContent = "Adicionar ao carrinho";
+
+          addToCartButton.addEventListener("click", async function () {
+            window.location.href = "/entrar";
+          });
+
+          const imageElement = document.createElement("img");
+          imageElement.src = product.image;
+          imageElement.alt = "Imagem do Produto";
+          imageElement.width = 300;  // Você pode definir a largura
+          imageElement.height = 600; // E a altura
+          // Adicione os elementos à div do produto
+          productDiv.appendChild(productName);
+          productDiv.appendChild(productPrice);
+          productDiv.appendChild(price_divided);
+          productDiv.appendChild(image);
+          productDiv.appendChild(description);
+          productDiv.appendChild(id);
+          productDiv.appendChild(addToCartButton)
+          productDiv.appendChild(imageElement);
+
+
+
+          // Adicione a div do produto à lista de produtos
+          productList.appendChild(productDiv);
+        });
+      } catch (error) {
+        throw new Error("Erro ao obter dados dos produtos: " + error);
+      }
+    }
+
+    // Função assíncrona para obter dados de planos do Flask
+    async function getPlans() {
+      try {
+        const response = await fetch("/productplans"); // Rota do Flask para obter planos
+        const data = await response.json();
+
+        // Limpe o conteúdo atual da div
+        const planList = document.getElementById("plan-list");
+        planList.innerHTML = "";
+
+        // Itere pelos planos e crie elementos HTML para exibi-los
+        data.forEach((plan) => {
+          const planDiv = document.createElement("div");
+          planDiv.className = "plan";
+
+          // Crie elementos HTML para exibir os detalhes do plano
+          const planName = document.createElement("h2");
+          planName.textContent = plan.name;
+
+          const tax_deb = document.createElement("p");
+          tax_deb.textContent = `Taxa de Débito: ${plan.tax_deb}%`;
+
+          const tax_cred = document.createElement("p");
+          tax_cred.textContent = `Taxa de Crédito: ${plan.tax_cred}%`;
+
+          const description = document.createElement("p");
+          description.textContent = `Descrição: ${plan.description}`;
+
+          const id = document.createElement("p");
+          id.textContent = ``;
+
+          const addToCartButton = document.createElement("button");
+          addToCartButton.type = "button";
+          addToCartButton.className = "btn btn-outline-success";
+          addToCartButton.setAttribute("data-plan-id", plan.id);
+          addToCartButton.textContent = "Adicionar ao carrinho";
+
+          addToCartButton.addEventListener("click", async function () {
+            window.location.href = "/entrar";
+          });
+          // Adicione os elementos à div do plano
+          planDiv.appendChild(planName);
+          planDiv.appendChild(tax_deb);
+          planDiv.appendChild(tax_cred);
+          planDiv.appendChild(description);
+          planDiv.appendChild(id);
+          planDiv.appendChild(addToCartButton);
+
+          // Adicione a div do plano à lista de planos
+          planList.appendChild(planDiv);
+        });
+      } catch (error) {
+        throw new Error("Erro ao obter dados dos planos: " + error);
+      }
+    }
+
+  </script>
+
+</html>

@@ -1,0 +1,10 @@
+/* Estilo padrão para os elementos <li> */
+li {
+    list-style-type: none;
+    padding: 10px;
+}
+
+/* Estilo ao passar o mouse sobre os elementos <li> */
+li:hover {
+    background-color: #f0f0f0; /* Altere para a cor desejada */
+}

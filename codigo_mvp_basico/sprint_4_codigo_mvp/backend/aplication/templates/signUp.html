@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Loja Stone</title>
+    <!-- Adicione os estilos CSS necessários, como o Bootstrap -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+</head>
+<body>
+  <nav class="navbar navbar-expand-lg bg-body-tertiary" style="background-color: #4CAF50; color: #fff;">
+    <div class="container-fluid">
+        Voltar
+    </div>
+</nav> 
+
+    <!-- Conteúdo da página -->
+    <div class="container mt-5">
+        <!-- Conteúdo da página -->
+        <div class="container mt-4">
+          <div class="row justify-content-center">
+            <div class="col-lg-6">
+              <div class="signup-container p-4 border rounded">
+                <h2 class="mb-4">Cadastre-se</h2>
+                <form id="signupForm">
+                  <div class="mb-3">
+                    <label for="fullName" class="form-label">Nome completo:</label>
+                    <input type="text" class="form-control" id="fullName" name="fullName" required>
+                  </div>
+                  <div class="mb-3">
+                    <label for="email" class="form-label">Email:</label>
+                    <input type="email" class="form-control" id="email" name="email" required>
+                  </div>
+                  <div class="mb-3">
+                    <label for="phone" class="form-label">Celular com DDD:</label>
+                    <input type="text" class="form-control" id="phone" name="phone" required>
+                  </div>
+                  <div class="mb-3">
+                    <label for="password" class="form-label">Senha:</label>
+                    <input type="password" class="form-control" id="password" name="password" required>
+                  </div>
+                  <div class="mb-3">
+                    <label for="confirmPassword" class="form-label">Confirmar senha:</label>
+                    <input type="password" class="form-control" id="confirmPassword" name="confirmPassword" required>
+                  </div>
+                  <p class="mt-3">Já tem uma conta? <a href="login.html">Login</a></p>
+                  <button type="submit" class="btn btn-success">Cadastrar</button>
+                </form>
+      
+              <!-- Bootstrap Alert for Success and Error Messages -->
+              <div class="alert-container mt-4">
+                <div class="alert alert-success" id="successAlert" style="display: none;">
+                  <strong>Success!</strong> Registration completed successfully. Redirecting...
+                </div>
+                <div class="alert alert-danger" id="errorAlert" style="display: none;">
+                  <strong>Error!</strong> Registration failed. Please try again.
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+    </div>
+
+    <!-- Inclua o JavaScript necessário, como o Bootstrap e o jQuery -->
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    
+</body>
+<script>
+    // Captura o evento de envio do formulário
+    document.addEventListener('DOMContentLoaded', function() {
+      const form = document.getElementById('signupForm');
+
+      form.addEventListener('submit', async function(event) {
+        event.preventDefault(); // Evita que o formulário seja enviado de maneira padrão
+
+        const fullName = document.getElementById('fullName').value;
+        const email = document.getElementById('email').value;
+        const phone = document.getElementById('phone').value;
+        const password = document.getElementById('password').value;
+        const confirmPassword = document.getElementById('confirmPassword').value;
+
+        // Verifique se as senhas coincidem
+        if (password !== confirmPassword) {
+          alert('As senhas não coincidem.');
+          return;
+        }
+
+        // Prepara os dados para enviar para o servidor
+        const userData = {
+          email: email,
+          password: password,
+          full_name: fullName,
+          celphone: phone
+        };
+
+        // Faz uma chamada POST para /users
+        try {
+          const response = await fetch('/users', {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(userData)
+          });
+
+          if (response.status === 204) {
+            // Sucesso! Redirecionar ou atualizar a UI
+            document.getElementById('successAlert').style.display = 'block';
+            document.getElementById('errorAlert').style.display = 'none';
+          } else {
+            // Falha! Mostrar uma mensagem de erro
+            document.getElementById('errorAlert').style.display = 'block';
+            document.getElementById('successAlert').style.display = 'none';
+          }
+
+        } catch (error) {
+          console.error('Houve um erro na requisição', error);
+          document.getElementById('errorAlert').style.display = 'block';
+          document.getElementById('successAlert').style.display = 'none';
+        }
+      });
+    });
+  </script>
+</html>

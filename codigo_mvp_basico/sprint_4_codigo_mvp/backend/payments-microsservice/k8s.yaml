@@ -1,0 +1,33 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+   name: payments-api
+   namespace: default
+spec:
+   replicas: 1
+   selector:
+      matchLabels:
+         payments: web
+   template:
+      metadata:
+         labels:
+            payments: web
+      spec:
+         containers:
+            - name: payments-site
+              image: payments
+              imagePullPolicy: Never
+---
+apiVersion: v1
+kind: Service
+metadata:
+   name: payments-entrypoint
+   namespace: default
+spec:
+   type: NodePort
+   selector:
+      payments: web
+   ports:
+      - port: 3000
+        targetPort: 3000
+        nodePort: 30001

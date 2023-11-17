@@ -1,0 +1,135 @@
+<!doctype html>
+<html lang="pt-br">
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Editar</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/css/bootstrap.min.css" rel="stylesheet"
+    integrity="sha384-4bw+/aepP/YC94hEpVNVgiZdgIC5+VKNBQNGCHeKRQN+PtmoHDEXuppvnDJzQIu9" crossorigin="anonymous">
+  <link rel="stylesheet" href="css/navbar.css" type="text/css">
+</head>
+
+<body>
+  <nav class="navbar navbar-expand-lg bg-body-tertiary">
+    <div class="container-fluid">
+      <a href="index.html" class="logo-container">
+        <img src="img/logo.png" class="logo" alt="Logo">
+      </a>
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent"
+        aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navbarSupportedContent">
+        <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+          <li class="nav-item">
+            <a class="nav-link" aria-current="page" href="index.html">Listagem</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="new.html">Cadastro</a>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </nav>
+  <main>
+    <div class="container text-center">
+      <h1 class="display-3">Editar Informações</h1>
+      <form id="edit-pet-form">
+        <div class="mb-3">
+          <label for="animal" class="form-label d-block">Espécie</label>
+          <select class="form-select-sm" id="animal" name="animal">
+            <option selected>Selecione a espécie</option>
+            <option value="Cachorro">Cachorro</option>
+            <option value="Gato">Gato</option>
+            <option value="Tartaruga">Tartaruga</option>
+          </select>
+        </div>
+        <div class="mb-3">
+          <label for="name" class="form-label">Nome</label>
+          <input type="text" class="form-control" id="name" name="name">
+        </div>
+        <div class="mb-3">
+          <label for="gender" class="form-label d-block">Gênero</label>
+          <select class="form-select-sm" id="gender" name="gender">
+            <option selected>Selecione o gênero</option>
+            <option value="Macho">Macho</option>
+            <option value="Fêmea">Fêmea</option>
+          </select>
+        </div>
+        <div class="mb-3">
+          <label for="age" class="form-label">Idade (em anos)</label>
+          <input type="number" class="form-control" id="age" name="age">
+        </div>
+        <div class="mb-3">
+          <label for="description" class="form-label">Descricao</label>
+          <textarea class="form-control" id="description" name="description" rows="3"></textarea>
+        </div>
+        <div class="mb-3">
+          <label for="image" class="form-label">Adicione uma foto do pet (URL)</label>
+          <input type="text" class="form-control" id="image" name="image">
+        </div>
+        <button type="submit" class="btn btn-primary">Enviar</button>
+      </form>
+    </div>
+  </main>
+  <script>
+    document.addEventListener('DOMContentLoaded', async () => {
+      const editPetForm = document.getElementById('edit-pet-form');
+
+      // Extract the ID from the query parameter
+      const urlParams = new URLSearchParams(window.location.search);
+      const petId = urlParams.get('id');
+
+      try {
+        const response = await fetch(`<IP_DO_SERVIDOR_EC2>/pets/${petId}`);
+        const petData = await response.json();
+
+        // Populate form fields with fetched data
+        for (const key in petData[0]) {
+          if (key !== 'id') { // Exclude ID field from populating
+            const inputField = editPetForm.querySelector(`[name="${key}"]`);
+            if (inputField) {
+              inputField.value = petData[0][key];
+            }
+          }
+        }
+      } catch (error) {
+        console.error('Error fetching pet data:', error);
+      }
+
+      editPetForm.addEventListener('submit', async (event) => {
+        event.preventDefault();
+
+        const formData = new FormData(editPetForm);
+        const petData = {};
+
+        formData.forEach((value, key) => {
+          petData[key] = value;
+        });
+
+        console.log(petData);
+
+        try {
+          const response = await fetch(`<IP_DO_SERVIDOR_EC2>/pets/${petId}`, {
+            method: 'PUT',
+            headers: {
+              'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(petData)
+          });
+
+          if (response.ok) {
+            window.location.href = 'index.html';
+          } else {
+            console.error('Error updating pet:', response.statusText);
+          }
+        } catch (error) {
+          console.error('Error updating pet:', error);
+        }
+      });
+    });
+  </script>
+</body>
+
+</html>
